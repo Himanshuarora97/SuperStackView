@@ -17,6 +17,8 @@
 		23A035A425573CD000AD19AA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A035A325573CD000AD19AA /* ViewController.swift */; };
 		23A035A925573CD200AD19AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23A035A825573CD200AD19AA /* Assets.xcassets */; };
 		23A035AC25573CD200AD19AA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23A035AA25573CD200AD19AA /* LaunchScreen.storyboard */; };
+		23A035BE255744A500AD19AA /* SuperStackView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A034F6255731BF00AD19AA /* SuperStackView.framework */; };
+		23A035BF255744A500AD19AA /* SuperStackView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23A034F6255731BF00AD19AA /* SuperStackView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,7 +29,28 @@
 			remoteGlobalIDString = 23A034F5255731BF00AD19AA;
 			remoteInfo = SuperStackView;
 		};
+		23A035C0255744A500AD19AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23A034ED255731BF00AD19AA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23A034F5255731BF00AD19AA;
+			remoteInfo = SuperStackView;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		23A035C2255744A500AD19AA /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				23A035BF255744A500AD19AA /* SuperStackView.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		23A034F6255731BF00AD19AA /* SuperStackView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SuperStackView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +90,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23A035BE255744A500AD19AA /* SuperStackView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -80,6 +104,7 @@
 				23A03503255731BF00AD19AA /* SuperStackViewTests */,
 				23A0359E25573CD000AD19AA /* SuperStackViewExample */,
 				23A034F7255731BF00AD19AA /* Products */,
+				23A035BD255744A500AD19AA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -124,6 +149,13 @@
 				23A035AD25573CD200AD19AA /* Info.plist */,
 			);
 			path = SuperStackViewExample;
+			sourceTree = "<group>";
+		};
+		23A035BD255744A500AD19AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,10 +215,12 @@
 				23A0359925573CD000AD19AA /* Sources */,
 				23A0359A25573CD000AD19AA /* Frameworks */,
 				23A0359B25573CD000AD19AA /* Resources */,
+				23A035C2255744A500AD19AA /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				23A035C1255744A500AD19AA /* PBXTargetDependency */,
 			);
 			name = SuperStackViewExample;
 			productName = SuperStackViewExample;
@@ -295,6 +329,11 @@
 			isa = PBXTargetDependency;
 			target = 23A034F5255731BF00AD19AA /* SuperStackView */;
 			targetProxy = 23A03501255731BF00AD19AA /* PBXContainerItemProxy */;
+		};
+		23A035C1255744A500AD19AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23A034F5255731BF00AD19AA /* SuperStackView */;
+			targetProxy = 23A035C0255744A500AD19AA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -443,6 +482,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SuperStackView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -468,6 +508,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = SuperStackView/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

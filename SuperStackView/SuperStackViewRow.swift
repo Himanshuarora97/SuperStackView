@@ -12,10 +12,11 @@ import UIKit
  */
 open class SuperStackViewRow: UIView {
     
+    private var positionalType: PositionalType = .none
     
-    public init(contentView: UIView) {
+    public init(contentView: UIView, positionalType: PositionalType) {
         self.contentView = contentView
-        
+        self.positionalType = positionalType
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 11.0, *) {
@@ -127,15 +128,35 @@ open class SuperStackViewRow: UIView {
     }
     
     private func setUpContentViewConstraints() {
-        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: layoutMarginsGuide.bottomAnchor)
-        bottomConstraint.priority = UILayoutPriority(rawValue: UILayoutPriority.required.rawValue - 1)
+        let leadingConstraint = contentView.leadingAnchor.constraint(equalTo:
+                                                                        layoutMarginsGuide.leadingAnchor)
+        let trailingConstraint = contentView.trailingAnchor.constraint(equalTo:
+                                                                        layoutMarginsGuide.trailingAnchor)
+        var bottomConstraint = contentView.bottomAnchor.constraint(equalTo:
+                                                                    layoutMarginsGuide.bottomAnchor)
+        var topConstraint = contentView.topAnchor.constraint(equalTo:
+                                                                layoutMarginsGuide.topAnchor)
+        var centerYConstraint = NSLayoutConstraint()
         
-        NSLayoutConstraint.activate([
-            contentView.leadingAnchor.constraint(equalTo: layoutMarginsGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: layoutMarginsGuide.trailingAnchor),
-            contentView.topAnchor.constraint(equalTo: layoutMarginsGuide.topAnchor),
-            bottomConstraint
-        ])
+        var constraints = [NSLayoutConstraint]()
+
+        
+        switch positionalType {
+        case .top:
+            bottomConstraint = contentView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
+        case .bottom:
+            topConstraint = contentView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor)
+        case .center:
+            centerYConstraint = contentView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
+        default:
+            break
+        }
+        if (centerYConstraint.firstItem == nil) {
+            constraints.append(contentsOf: [leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
+        } else {
+            constraints.append(contentsOf: [leadingConstraint, trailingConstraint, centerYConstraint])
+        }
+        NSLayoutConstraint.activate(constraints)
     }
     
     private func setUpSeparatorViewConstraints() {
