@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         stackView.separatorColor = .black
         stackView.rowInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         stackView.separatorInset = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        stackView.automaticallyHidesLastSeparator = true
         return stackView
     }()
     

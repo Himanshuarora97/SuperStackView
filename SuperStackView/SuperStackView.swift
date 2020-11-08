@@ -246,6 +246,12 @@ open class SuperStackView: UIView {
         let cell = createRow(withContentView: contentView, positionalType: positionalType)
         stack.insertArrangedSubview(cell, at: index)
         
+        updateSeparatorVisibility(forCell: cell)
+        
+        if let prevCell = cellAbove(cell: cell) {
+            updateSeparatorVisibility(forCell: prevCell)
+        }
+        
         if animated {
             cell.alpha = 0
             layoutIfNeeded()
@@ -284,7 +290,6 @@ open class SuperStackView: UIView {
     private func updateSeparatorVisibility(forCell cell: SuperStackViewRow) {
         let isLastCellAndHidingIsEnabled = automaticallyHidesLastSeparator &&
             cell === stack.arrangedSubviews.last
-        
         cell.isSeparatorHidden =
             isLastCellAndHidingIsEnabled || cell.shouldHideSeparator
     }
@@ -298,6 +303,15 @@ open class SuperStackView: UIView {
     
     open func getView(for row: UIView) -> UIView? {
         return row.superview as? SuperStackViewRow
+    }
+    
+    private func cellAbove(cell: SuperStackViewRow) -> SuperStackViewRow? {
+        #if swift(>=5.0)
+        guard let index = stack.arrangedSubviews.firstIndex(of: cell), index > 0 else { return nil }
+        #else
+        guard let index = stack.arrangedSubviews.index(of: cell), index > 0 else { return nil }
+        #endif
+        return stack.arrangedSubviews[index - 1] as? SuperStackViewRow
     }
     
 }
