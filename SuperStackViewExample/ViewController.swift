@@ -34,9 +34,9 @@ class ViewController: UIViewController {
         let greenDummy = DummyBoxView(width: 30, height: 80, color: .green)
         let blueDummy = DummyBoxView(width: 80, height: 30, color: .systemBlue)
         
-        hStackView.addRow(redDummy, positionalType: .top)
+        hStackView.addRow(redDummy, positionalTypes: [.centerY])
         hStackView.addRow(greenDummy)
-        hStackView.addRow(blueDummy, positionalType: .top)
+        hStackView.addRow(blueDummy, positionalTypes: [.top])
         
         self.view.addSubview(hStackView)
         

@@ -12,11 +12,11 @@ import UIKit
  */
 open class SuperStackViewRow: UIView {
     
-    private var positionalType: PositionalType = .none
+    private var positionalTypes: [PositionalType]? = nil
     
-    public init(contentView: UIView, positionalType: PositionalType) {
+    public init(contentView: UIView, positionalTypes: [PositionalType]?) {
         self.contentView = contentView
-        self.positionalType = positionalType
+        self.positionalTypes = positionalTypes
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
         if #available(iOS 11.0, *) {
@@ -132,30 +132,51 @@ open class SuperStackViewRow: UIView {
                                                                         layoutMarginsGuide.leadingAnchor)
         let trailingConstraint = contentView.trailingAnchor.constraint(equalTo:
                                                                         layoutMarginsGuide.trailingAnchor)
-        var bottomConstraint = contentView.bottomAnchor.constraint(equalTo:
+        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo:
                                                                     layoutMarginsGuide.bottomAnchor)
-        var topConstraint = contentView.topAnchor.constraint(equalTo:
+        let topConstraint = contentView.topAnchor.constraint(equalTo:
                                                                 layoutMarginsGuide.topAnchor)
-        var centerYConstraint = NSLayoutConstraint()
         
         var constraints = [NSLayoutConstraint]()
+        // general contraints
+        constraints.append(contentsOf: [leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
 
-        
-        switch positionalType {
-        case .top:
-            bottomConstraint = contentView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
-        case .bottom:
-            topConstraint = contentView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor)
-        case .center:
-            centerYConstraint = contentView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
-        default:
-            break
+        if let positionalTypes = self.positionalTypes {
+            var newConstraint: NSLayoutConstraint?
+            
+            for positionalType in positionalTypes {
+                
+                switch positionalType {
+                case .top:
+                    constraints = constraints.filter { $0 != bottomConstraint }
+                    // this is now new bottom sheet constraint
+                    newConstraint = contentView.bottomAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.bottomAnchor)
+                case .bottom:
+                    constraints = constraints.filter { $0 != topConstraint }
+                    newConstraint = contentView.topAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.topAnchor)
+                case .centerY:
+                    constraints = constraints.filter { $0 != topConstraint &&  $0 != bottomConstraint }
+                    newConstraint = contentView.centerYAnchor.constraint(equalTo: layoutMarginsGuide.centerYAnchor)
+                case .start:
+                    constraints = constraints.filter { $0 != trailingConstraint }
+                    newConstraint = contentView.trailingAnchor.constraint(lessThanOrEqualTo: layoutMarginsGuide.trailingAnchor)
+                case .end:
+                    constraints = constraints.filter { $0 != leadingConstraint }
+                    newConstraint = contentView.leadingAnchor.constraint(greaterThanOrEqualTo: layoutMarginsGuide.leadingAnchor)
+                case .centerX:
+                    constraints = constraints.filter { $0 != leadingConstraint && $0 != trailingConstraint }
+                    newConstraint = contentView.centerXAnchor.constraint(equalTo: layoutMarginsGuide.centerXAnchor)
+                }
+                
+            }
+            
+            if let contraint = newConstraint {
+                constraints.append(contraint)
+            }
+            
+            
         }
-        if (centerYConstraint.firstItem == nil) {
-            constraints.append(contentsOf: [leadingConstraint, trailingConstraint, topConstraint, bottomConstraint])
-        } else {
-            constraints.append(contentsOf: [leadingConstraint, trailingConstraint, centerYConstraint])
-        }
+
         NSLayoutConstraint.activate(constraints)
     }
     

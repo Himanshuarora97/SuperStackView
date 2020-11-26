@@ -8,10 +8,12 @@
 import UIKit
 
 public enum PositionalType: Int {
-    case top = 0
-    case bottom = 1
-    case center = 2
-    case none = 3
+    case top
+    case bottom
+    case centerX
+    case centerY
+    case start
+    case end
 }
 
 open class SuperStackView: UIView {
@@ -160,12 +162,12 @@ open class SuperStackView: UIView {
     
     
     // MARK: Add and remove Row Functions
-    open func addRow(_ row: UIView, animated: Bool = false, positionalType: PositionalType = .none) {
-        insertRow(withContentView: row, atIndex: stack.arrangedSubviews.count, animated: animated, positionalType: positionalType)
+    open func addRow(_ row: UIView, animated: Bool = false, positionalTypes: [PositionalType]? = nil) {
+        insertRow(withContentView: row, atIndex: stack.arrangedSubviews.count, animated: animated, positionalTypes: positionalTypes)
     }
     
-    open func addRow(_ row: UIView, animated: Bool = false, positionalType: PositionalType = .none, inset: UIEdgeInsets) {
-        insertRow(withContentView: row, atIndex: stack.arrangedSubviews.count, animated: animated, positionalType: positionalType)
+    open func addRow(_ row: UIView, animated: Bool = false, inset: UIEdgeInsets, positionalTypes: [PositionalType]? = nil) {
+        insertRow(withContentView: row, atIndex: stack.arrangedSubviews.count, animated: animated, positionalTypes: positionalTypes)
         setInset(forRow: row, inset: inset)
     }
     
@@ -241,9 +243,9 @@ open class SuperStackView: UIView {
     }
     
     private func insertRow(withContentView contentView: UIView, atIndex index: Int,
-                           animated: Bool, positionalType: PositionalType) {
+                           animated: Bool, positionalTypes: [PositionalType]?) {
         
-        let cell = createRow(withContentView: contentView, positionalType: positionalType)
+        let cell = createRow(withContentView: contentView, positionalTypes: positionalTypes)
         stack.insertArrangedSubview(cell, at: index)
         
         updateSeparatorVisibility(forCell: cell)
@@ -261,8 +263,8 @@ open class SuperStackView: UIView {
         }
     }
     
-    private func createRow(withContentView contentView: UIView, positionalType: PositionalType) -> SuperStackViewRow {
-        let cell = cellForRow(contentView, positionalType: positionalType)
+    private func createRow(withContentView contentView: UIView, positionalTypes: [PositionalType]?) -> SuperStackViewRow {
+        let cell = cellForRow(contentView, positionalTypes: positionalTypes)
         cell.rowBackgroundColor = rowBackgroundColor
         cell.rowInset = rowInset
         cell.separatorAxis = stack.axis == .horizontal ? .vertical : .horizontal
@@ -273,8 +275,8 @@ open class SuperStackView: UIView {
         return cell
     }
     
-    open func cellForRow(_ row: UIView, positionalType: PositionalType) -> SuperStackViewRow {
-        let view = SuperStackViewRow(contentView: row, positionalType: positionalType)
+    open func cellForRow(_ row: UIView, positionalTypes: [PositionalType]?) -> SuperStackViewRow {
+        let view = SuperStackViewRow(contentView: row, positionalTypes: positionalTypes)
         return view
     }
     
